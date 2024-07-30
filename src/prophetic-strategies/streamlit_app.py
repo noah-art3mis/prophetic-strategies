@@ -25,17 +25,21 @@ st.write("")
 st.write("")
 
 if question != "":
+    
     result = search(question, db)
     st.write_stream(fake_stream(result["content"]))
     st.write("")
 
-st.caption(
-    f'<div style="text-align: right;">{result["book"] if result["book"] else ""}</div>',
-    unsafe_allow_html=True,
-)
-st.caption(
-    f'<div style="text-align: right;">Sentence {result["sentence"] if result["sentence"] else ""}</div>',
-    unsafe_allow_html=True,
-)
+    reference_book = result["book"]
+    st.caption(
+        f'<div style="text-align: right;">{reference_book}</div>',
+        unsafe_allow_html=True,
+    )
 
-# st.feedback()
+    sentence_number = "Sentence " + str(result["sentence"])
+    st.caption(
+        f'<div style="text-align: right;">{sentence_number}</div>',
+        unsafe_allow_html=True,
+    )
+
+    # st.feedback()
