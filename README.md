@@ -1,13 +1,5 @@
 # Prophetic Strategies
 
-Ask and you shall receive.
+A simple RAG app using Lacan's Seminar Book 5. Access here.
 
-## Tech
-
--   openai
--   streamlit
--   sqlite
-
-## TODO
-
-- add pinecone
+Uses openai, streamlit, sqlite, pandas.
