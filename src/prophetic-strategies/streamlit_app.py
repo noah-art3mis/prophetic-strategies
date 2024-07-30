@@ -30,10 +30,11 @@ if question != "":
     st.write("")
 
 st.caption(
-    f'<div style="text-align: right;">{result["book"]}</div>', unsafe_allow_html=True
+    f'<div style="text-align: right;">{result["book"] if result["book"] else ""}</div>',
+    unsafe_allow_html=True,
 )
 st.caption(
-    f'<div style="text-align: right;">Sentence {result["sentence"]}</div>',
+    f'<div style="text-align: right;">Sentence {result["sentence"] if result["sentence"] else ""}</div>',
     unsafe_allow_html=True,
 )
 
