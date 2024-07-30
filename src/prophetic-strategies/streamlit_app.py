@@ -4,14 +4,16 @@ from utils.utils import fake_stream
 from utils.semantic_search import search
 
 STRATEGIES = {
-    # "Navigator": Path("db/oblique.db"),
     "Oracle": Path("db/book5.db"),
+    # "Navigator": Path("db/oblique.db"),
 }
 
-with st.sidebar:
-    st.header("Parameters")
-    strategy_name = st.selectbox("Strategy", list(STRATEGIES.keys()))
-    db = STRATEGIES[strategy_name]  # type: ignore
+# with st.sidebar:
+#     st.header("Parameters")
+#     strategy_name = st.selectbox("Strategy", list(STRATEGIES.keys()))
+#     db = STRATEGIES[strategy_name]  # type: ignore
+
+db = Path("db/book5.db")
 
 st.title("Prophetic Strategies")
 # st.caption("[Source](https://github.com/noah-art3mis/prophetic-strategies)")
