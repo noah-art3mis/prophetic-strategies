@@ -7,13 +7,15 @@ import numpy as np
 import streamlit as st
 from openai import OpenAI
 
-
-def search(question: str, db: Path) -> pd.Series:
-    qv = _get_embedding(question)
-
+@st.cache_data
+def get_data(db: Path) -> pd.DataFrame:
     # requires table to have same name as db file
     table = os.path.basename(db).replace(".db", "")
-    df = pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
+    return pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
+
+
+def search(question: str, df: pd.DataFrame) -> pd.Series:
+    qv = _get_embedding(question)
 
     df["similarity"] = df["embedding"].apply(lambda x: _cosine_similarity(x, qv))
 

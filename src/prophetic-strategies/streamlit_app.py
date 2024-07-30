@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
 from utils import fake_stream
-from semantic_search import search
+from semantic_search import search, get_data
 
 STRATEGIES = {
     "Oracle": Path("db/book5.db"),
@@ -25,8 +25,8 @@ st.write("")
 st.write("")
 
 if question != "":
-    
-    result = search(question, db)
+    df = get_data(db)
+    result = search(question, df)
     st.write_stream(fake_stream(result["content"]))
     st.write("")
 
