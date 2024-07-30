@@ -8,6 +8,7 @@ STRATEGIES = {
     # "Navigator": Path("db/oblique.db"),
 }
 
+
 # with st.sidebar:
 #     st.header("Parameters")
 #     strategy_name = st.selectbox("Strategy", list(STRATEGIES.keys()))
@@ -16,30 +17,43 @@ STRATEGIES = {
 db = Path("db/book5.db")
 
 st.title("Prophetic Strategies")
-# st.caption("[Source](https://github.com/noah-art3mis/prophetic-strategies)")
-st.write("")
-question = st.text_input("What is it that you desire (not) to know?")
-st.write("")
-st.write("")
-st.write("")
+# st.caption("([Source](https://github.com/noah-art3mis/prophetic-strategies))")
 st.write("")
 
-if question != "":
-    df = get_data(db)
-    result = search(question, df)
-    st.write_stream(fake_stream(result["content"]))
+if "tokens_used" not in st.session_state:
+    st.session_state.tokens_used = 0
+
+if st.session_state.tokens_used >= 50:
+    p1, p2 = st.columns(2)
+    progress_bar = p1.progress(
+        st.session_state.tokens_used, text="Prophet's lack of patience"
+    )
+
+if st.session_state.tokens_used >= 100:
+    st.write("The oracle tires of your antics. Please come another time.")
+else:
+    st.write("")
+    question = st.text_input("What is it that you desire (not) to know?")
+    st.write("")
+    st.write("")
     st.write("")
 
-    reference_book = result["book"]
-    st.caption(
-        f'<div style="text-align: right;">{reference_book}</div>',
-        unsafe_allow_html=True,
-    )
+    if question != "":
+        df = get_data(db)
+        result = search(question, df)
+        st.write_stream(fake_stream(result["content"]))
+        st.write("")
 
-    sentence_number = "Sentence " + str(result["sentence"])
-    st.caption(
-        f'<div style="text-align: right;">{sentence_number}</div>',
-        unsafe_allow_html=True,
-    )
+        reference_book = result["book"]
+        st.caption(
+            f'<div style="text-align: right;">{reference_book}</div>',
+            unsafe_allow_html=True,
+        )
 
-    # st.feedback()
+        sentence_number = "Sentence " + str(result["sentence"])
+        st.caption(
+            f'<div style="text-align: right;">{sentence_number}</div>',
+            unsafe_allow_html=True,
+        )
+
+        # st.feedback()

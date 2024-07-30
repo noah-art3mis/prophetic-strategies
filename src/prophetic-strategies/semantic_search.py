@@ -7,6 +7,9 @@ import numpy as np
 import streamlit as st
 from openai import OpenAI
 
+TOKEN_MULTIPLIER = 1
+
+
 @st.cache_data
 def get_data(db: Path) -> pd.DataFrame:
     # requires table to have same name as db file
@@ -25,7 +28,16 @@ def search(question: str, df: pd.DataFrame) -> pd.Series:
 def _get_embedding(text: str) -> list[float]:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     response = client.embeddings.create(input=text, model="text-embedding-3-small")
-    return response.data[0].embedding
+    completion = response.data[0].embedding
+
+    _update_tokens(response.usage.total_tokens)
+    return completion
+
+
+def _update_tokens(n_tokens: int):
+    value = (st.session_state.tokens_used + n_tokens) * TOKEN_MULTIPLIER
+    result = min(100, value)
+    st.session_state.tokens_used = int(result)
 
 
 def _cosine_similarity(a, b: list):
