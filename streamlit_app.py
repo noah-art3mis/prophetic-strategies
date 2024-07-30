@@ -1,27 +1,25 @@
-import time
-import random
+import os
+from pathlib import Path
 import streamlit as st
 from openai import OpenAI
-from strategies import strategies_oblique, strategies_alchemist, strategies_prophet
+from utils.utils import stream_data
+import sqlite3
 
 STRATEGIES = {
-    "Oblique Strategies": strategies_oblique,
-    "Alchemist Strategies": strategies_alchemist,
-    "Prophet Strategies": strategies_prophet,
+    # "Navigator": Path("db/oblique.db"),
+    "Oracle": Path("db/book5.db"),
 }
 
 
 with st.sidebar:
     st.header("Parameters")
     strategy_name = st.selectbox("Strategy", list(STRATEGIES.keys()))
-    strategy = STRATEGIES[strategy_name] # type: ignore
+    strategy = STRATEGIES[strategy_name]  # type: ignore
 
 st.title("Prophetic Strategies")
 st.write("")
-question = st.text_input("Ask and you shall receive")
+question = st.text_input("What is it that you desire to (not) know?")
 st.write("")
-
-st.header("Answer")
 st.write("")
 
 # if question != "":
@@ -37,11 +35,33 @@ st.write("")
 # )
 
 
-def stream_data(data):
-    for word in data.split(" "):
-        yield word + " "
-        time.sleep(0.12)
+def get_sentence_from_db(db: Path) -> dict:
+    # requires table to have same name as db file
+    table = os.path.basename(db).replace(".db", "")
+    with sqlite3.connect(db) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            f"""SELECT * FROM {table} ORDER BY RANDOM() LIMIT 1"""
+        )  # sql injection?
+        row = cur.fetchone()
+        cur.close()
+
+        sentence = {
+            "book": row[0],
+            "sentence": row[1],
+            "chapter": row[2],
+            "sentence_chapter": row[3],
+            "content": row[4],
+            "embedding": row[5],
+        }
+
+        return sentence
+
 
 if question != "":
-    sample = random.sample(strategy, 1)  # type: ignore
-    st.write_stream(stream_data(sample[0]))
+    result = get_sentence_from_db(strategy)
+    st.write_stream(stream_data(result["content"]))
+    st.write("")
+    st.caption(result["book"])
+    st.caption(f"Sentence {result['sentence']}")
+    st.write(result["embedding"])

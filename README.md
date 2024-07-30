@@ -6,5 +6,8 @@ Ask and you shall receive.
 
 -   openai
 -   streamlit
--   langchain
 -   sqlite
+
+## TODO
+
+- add pinecone
