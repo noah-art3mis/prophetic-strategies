@@ -1,7 +1,7 @@
 import streamlit as st
 from pathlib import Path
-from utils.utils import fake_stream
-from utils.semantic_search import search
+from utils import fake_stream
+from semantic_search import search
 
 STRATEGIES = {
     "Oracle": Path("db/book5.db"),
@@ -36,3 +36,5 @@ st.caption(
     f'<div style="text-align: right;">Sentence {result["sentence"]}</div>',
     unsafe_allow_html=True,
 )
+
+# st.feedback()
