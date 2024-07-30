@@ -1,8 +1,6 @@
 import os
 import sqlite3
 from pathlib import Path
-import time
-from typing import Generator
 
 import pandas as pd
 import numpy as np

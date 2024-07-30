@@ -21,11 +21,18 @@ st.write("")
 question = st.text_input("What is it that you desire (not) to know?")
 st.write("")
 st.write("")
-
+st.write("")
+st.write("")
 
 if question != "":
     result = search(question, db)
     st.write_stream(fake_stream(result["content"]))
     st.write("")
-    st.caption(result["book"])
-    st.caption(f"Sentence {result['sentence']}")
+
+st.caption(
+    f'<div style="text-align: right;">{result["book"]}</div>', unsafe_allow_html=True
+)
+st.caption(
+    f'<div style="text-align: right;">Sentence {result["sentence"]}</div>',
+    unsafe_allow_html=True,
+)
