@@ -5,18 +5,30 @@ from semantic_search import get_data
 
 db = Path("db/book5.db")
 
-
-with st.sidebar:
-    st.header("Parameters")
-    strategy = st.selectbox("Strategy", ["Oracle", "Navigator"])
-
-
-st.title("Prophetic Strategies")
-# st.caption("([Source](https://github.com/noah-art3mis/prophetic-strategies))")
-st.write("")
+if "feedback" not in st.session_state:
+    st.session_state.feedback = None
 
 if "tokens_used" not in st.session_state:
     st.session_state.tokens_used = 0
+
+if "answer" not in st.session_state:
+    st.session_state.answer = None
+
+
+st.title("Prophetic Strategies")
+st.write("")
+
+with st.sidebar:
+    st.header("Parameters")
+    strategy = st.selectbox("Strategy", ["Navigator", "Oracle"])
+
+    st.markdown("---")
+    st.write("Made by Gustavo Costa.")
+    st.write(
+        "[Source code](https://github.com/noah-art3mis/prophetic-strategies) / [Blog](https://gustavocosta.psc.br/) / [Instagram](https://www.instagram.com/simulacro.psi/) / [Twitter](https://x.com/simulacrum_ai) / [LinkedIn](https://www.linkedin.com/in/gustavoarcos/)"
+    )
+    st.write("")
+    st.write("")
 
 if st.session_state.tokens_used >= 50:
     p1, p2 = st.columns(2)
@@ -27,18 +39,26 @@ if st.session_state.tokens_used >= 50:
 if st.session_state.tokens_used >= 100:
     st.write("The oracle tires of your antics. Please come another time.")
 else:
-    st.write("")
-    question = st.text_input("What is it that you desire (not) to know?")
-    st.write("")
-    st.write("")
-    st.write("")
+    with st.form("my_form", border=False):
+        st.write("")
+        question = st.text_input("What is it that you desire (not) to know?")
+        submit = st.form_submit_button("O, Prophet...")
 
-    if question != "":
+    if submit:
         df = get_data(db)
         prophet = find_prophet(strategy)  # type: ignore
-        result = prophet.search(question, df)
+        answer = prophet.search(question, df)
+        st.session_state.answer = answer
+        st.session_state.feedback = None
 
-        st.write_stream(fake_stream(result["content"]))
+    result = st.session_state.answer
+
+    if result is not None:
+        if submit:
+            st.write_stream(fake_stream(result["content"]))
+        else:
+            st.write(result["content"])
+
         st.write("")
 
         reference_book = result["book"]
@@ -53,4 +73,8 @@ else:
             unsafe_allow_html=True,
         )
 
-        # st.feedback()
+    # def thanks():
+    #     st.toast("The prophet thanks you for the feedback.")
+
+    # if st.session_state.feedback is None:
+    #     feedback = st.feedback(on_change=thanks)
