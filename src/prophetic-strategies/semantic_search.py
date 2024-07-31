@@ -17,15 +17,7 @@ def get_data(db: Path) -> pd.DataFrame:
     return pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
 
 
-def search(question: str, df: pd.DataFrame) -> pd.Series:
-    qv = _get_embedding(question)
-
-    df["similarity"] = df["embedding"].apply(lambda x: _cosine_similarity(x, qv))
-
-    return df.sort_values("similarity", ascending=False).head(1).iloc[0]
-
-
-def _get_embedding(text: str) -> list[float]:
+def get_embedding(text: str) -> list[float]:
     client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     response = client.embeddings.create(input=text, model="text-embedding-3-small")
     completion = response.data[0].embedding
@@ -40,7 +32,7 @@ def _update_tokens(n_tokens: int):
     st.session_state.tokens_used = int(result)
 
 
-def _cosine_similarity(a, b: list):
+def cosine_similarity(a, b: list):
     a = _decode_binary_data(a)
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
