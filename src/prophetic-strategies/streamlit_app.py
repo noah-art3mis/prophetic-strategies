@@ -18,7 +18,7 @@ if "answer" not in st.session_state:
 st.title("Prophetic Strategies")
 st.write("")
 
-ith st.sidebar:
+with st.sidebar:
     st.header("Parameters")
     strategy = st.selectbox("Strategy", ["Navigator", "Oracle"])
 
@@ -27,7 +27,7 @@ ith st.sidebar:
     st.write(
         "[Source code](https://github.com/noah-art3mis/prophetic-strategies) / [Blog](https://gustavocosta.psc.br/) / [Instagram](https://www.instagram.com/simulacro.psi/) / [Twitter](https://x.com/simulacrum_ai) / [LinkedIn](https://www.linkedin.com/in/gustavoarcos/)"
     )
-   st.write("")
+    st.write("")
     st.write("")
 
 if st.session_state.tokens_used >= 50:
@@ -73,7 +73,7 @@ else:
             unsafe_allow_html=True,
         )
 
-        # def thanks():
+    # def thanks():
     #     st.toast("The prophet thanks you for the feedback.")
 
     # if st.session_state.feedback is None:
