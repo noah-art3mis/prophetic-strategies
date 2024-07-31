@@ -1,20 +1,15 @@
 import streamlit as st
 from pathlib import Path
-from utils import fake_stream
-from semantic_search import search, get_data
-
-STRATEGIES = {
-    "Oracle": Path("db/book5.db"),
-    # "Navigator": Path("db/oblique.db"),
-}
-
-
-# with st.sidebar:
-#     st.header("Parameters")
-#     strategy_name = st.selectbox("Strategy", list(STRATEGIES.keys()))
-#     db = STRATEGIES[strategy_name]  # type: ignore
+from utils import fake_stream, find_prophet
+from semantic_search import get_data
 
 db = Path("db/book5.db")
+
+
+with st.sidebar:
+    st.header("Parameters")
+    strategy = st.selectbox("Strategy", ["Oracle", "Navigator"])
+
 
 st.title("Prophetic Strategies")
 # st.caption("([Source](https://github.com/noah-art3mis/prophetic-strategies))")
@@ -40,7 +35,9 @@ else:
 
     if question != "":
         df = get_data(db)
-        result = search(question, df)
+        prophet = find_prophet(strategy)  # type: ignore
+        result = prophet.search(question, df)
+
         st.write_stream(fake_stream(result["content"]))
         st.write("")
 
