@@ -1,6 +1,11 @@
 import time
 from typing import Generator
-from Prophet import Prophet, ProphetRandom, ProphetSemanticSearch
+from Prophet import (
+    Prophet,
+    ProphetRandom,
+    ProphetSemanticSearch,
+    ProphetSemanticWithRerank,
+)
 
 
 def fake_stream(sentence: str) -> Generator[str, None, None]:
@@ -11,9 +16,11 @@ def fake_stream(sentence: str) -> Generator[str, None, None]:
 
 def find_prophet(strategy: str) -> Prophet:
     match strategy:
-        case "Oracle":
+        case "Dancer":
             return ProphetRandom()
-        case "Navigator":
+        case "Oracle":
             return ProphetSemanticSearch()
+        case "Navigator":
+            return ProphetSemanticWithRerank()
         case _:
             raise ValueError(f"Invalid strategy: {strategy}")
