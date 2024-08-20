@@ -77,7 +77,7 @@ else:
             unsafe_allow_html=True,
         )
 
-        if DEBUG:
+       if DEBUG:
             st.markdown("## Debug")
             st.markdown("### Top K")
             st.dataframe(result)
