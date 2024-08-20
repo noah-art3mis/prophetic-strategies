@@ -3,6 +3,8 @@ from pathlib import Path
 from utils import fake_stream, find_prophet
 from semantic_search import get_data
 
+DEBUG = False
+
 db = Path("db/book5.db")
 
 if "feedback" not in st.session_state:
@@ -20,7 +22,7 @@ st.write("")
 
 with st.sidebar:
     st.header("Parameters")
-    strategy = st.selectbox("Strategy", ["Navigator", "Oracle"])
+    strategy = st.selectbox("Strategy", ["Oracle", "Navigator", "Dancer"])
 
     st.markdown("---")
     st.write("Made by Gustavo Costa.")
@@ -47,31 +49,38 @@ else:
     if submit:
         df = get_data(db)
         prophet = find_prophet(strategy)  # type: ignore
-        answer = prophet.search(question, df)
+        answer = prophet.search(question, df, top_k=10)
         st.session_state.answer = answer
         st.session_state.feedback = None
 
     result = st.session_state.answer
 
     if result is not None:
+        top_result = result.iloc[0]
+
         if submit:
-            st.write_stream(fake_stream(result["content"]))
+            st.write_stream(fake_stream(top_result["content"]))
         else:
-            st.write(result["content"])
+            st.write(top_result["content"])
 
         st.write("")
 
-        reference_book = result["book"]
+        reference_book = top_result["book"]
         st.caption(
             f'<div style="text-align: right;">{reference_book}</div>',
             unsafe_allow_html=True,
         )
 
-        sentence_number = "Sentence " + str(result["sentence"])
+        sentence_number = "Sentence " + str(top_result["sentence"])
         st.caption(
             f'<div style="text-align: right;">{sentence_number}</div>',
             unsafe_allow_html=True,
         )
+
+       if DEBUG:
+            st.markdown("## Debug")
+            st.markdown("### Top K")
+            st.dataframe(result)
 
     # def thanks():
     #     st.toast("The prophet thanks you for the feedback.")
