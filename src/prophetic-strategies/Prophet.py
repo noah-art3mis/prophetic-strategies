@@ -8,23 +8,42 @@ class Prophet(ABC):
 
     @abstractmethod
     def search(
-        self, question: str, df: pd.DataFrame, top_k: int | None
-    ) -> pd.DataFrame:
+        self, question: str, df: pd.DataFrame, top_k: int | None, iterations: int = 1
+    ) -> str:
         pass
 
 
 class ProphetRandom(Prophet):
 
     def search(
-        self, question: str, df: pd.DataFrame, top_k: int | None
-    ) -> pd.DataFrame:
-        return df.sample(top_k)
+        self, question: str, df: pd.DataFrame, top_k: int | None, iterations: int = 1
+    ) -> str:
+        
+        results = df.sample(iterations)
+        result = " ".join(results["content"])
+        return result
+
+
+class ProphetRandom2(Prophet):
+
+    def search(
+        self, question: str, df: pd.DataFrame, top_k: int | None, iterations: int = 1
+    ) -> str:
+
+        sample = df.sample(1)
+        result = sample["content"]
+        sample_index = df["sentence"]
+
+        for i in range(iterations):
+            result += df.loc[df["sentence"] == sample_index + i, "content"]
+
+        return result
 
 
 class ProphetSemanticSearch(Prophet):
 
     def search(
-        self, question: str, df: pd.DataFrame, top_k: int | None
+        self, question: str, df: pd.DataFrame, top_k: int | None, iterations: int = 1
     ) -> pd.DataFrame:
         qv = get_embedding(question)
         df["similarity"] = df["embedding"].apply(lambda x: cosine_similarity(x, qv))
@@ -37,7 +56,7 @@ class ProphetSemanticSearch(Prophet):
 class ProphetSemanticWithRerank(ProphetSemanticSearch):
 
     def search(
-        self, question: str, df: pd.DataFrame, top_k: int | None
+        self, question: str, df: pd.DataFrame, top_k: int | None, iterations: int = 1
     ) -> pd.DataFrame:
         unranked = super().search(question, df, top_k)
         reranked = rerank(question, unranked, top_k)
