@@ -42,3 +42,4 @@ def _decode_binary_data(data):
     num_elements = len(data) // 8  # Each float64 is 8 bytes
     decoded_array = np.frombuffer(data, dtype=np.float64, count=num_elements)
     return decoded_array
+

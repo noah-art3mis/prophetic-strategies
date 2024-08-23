@@ -3,7 +3,10 @@ from pathlib import Path
 from utils import fake_stream, find_prophet
 from semantic_search import get_data
 
-DEBUG = False
+DEBUG = True
+STRATEGIES = ["Oracle", "Navigator", "Dancer"]
+
+
 
 db = Path("db/book5.db")
 
@@ -22,9 +25,10 @@ st.write("")
 
 with st.sidebar:
     st.header("Parameters")
-    strategy = st.selectbox("Strategy", ["Oracle", "Navigator", "Dancer"])
+    strategy = st.selectbox("Strategy", STRATEGIES)
+    iterations = st.slider("Iterations", 0, 5, 2)
 
-    st.markdown("---")
+    st.divider()
     st.write("Made by Gustavo Costa.")
     st.write(
         "[Source code](https://github.com/noah-art3mis/prophetic-strategies) / [Blog](https://gustavocosta.psc.br/) / [Instagram](https://www.instagram.com/simulacro.psi/) / [Twitter](https://x.com/simulacrum_ai) / [LinkedIn](https://www.linkedin.com/in/gustavoarcos/)"
@@ -49,7 +53,7 @@ else:
     if submit:
         df = get_data(db)
         prophet = find_prophet(strategy)  # type: ignore
-        answer = prophet.search(question, df, top_k=10)
+        answer = prophet.search(question, df, top_k=10, iterations=iterations)
         st.session_state.answer = answer
         st.session_state.feedback = None
 
