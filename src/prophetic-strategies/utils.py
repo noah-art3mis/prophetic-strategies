@@ -24,3 +24,15 @@ def find_prophet(strategy: str) -> Prophet:
             return ProphetSemanticWithRerank()
         case _:
             raise ValueError(f"Invalid strategy: {strategy}")
+
+
+def get_next_by_index():
+    pass
+
+
+def get_next_semantic():
+    pass
+
+
+def get_next_completion():
+    pass
