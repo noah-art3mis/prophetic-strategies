@@ -23,7 +23,7 @@ class Prophet:
     def generate_reference(self, content: str, search_result: pd.Series) -> dict:
         book_name = make_book_name(self.api_key, content)
         book_number = write_roman(random.randint(50, 100))
-        
+
         return {
             "book": f"Book {book_number} - {book_name}",
             "sentence": random.randint(0, 1000),
@@ -128,3 +128,11 @@ class Erratic(Prophet):
         self, search_result: str, message_history: Optional[list]
     ) -> Generator:
         return fake_stream(search_result)
+
+    # override
+    def generate_reference(self, content: str, search_result: pd.Series) -> dict:
+        return {
+            "book": search_result["book"],
+            "sentence": search_result["sentence"],
+            "content": content,
+        }
