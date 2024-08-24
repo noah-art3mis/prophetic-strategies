@@ -1,22 +1,13 @@
-from enum import Enum, auto
 from abc import ABC, abstractmethod
-
+from constants import ALLOWED_BASE_MODELS
 import tiktoken
-
-
-
-class Source(Enum):
-    OPENAI = auto()
-    ANTHROPIC = auto()
-    LOCAL = auto()
-
 
 
 class Model(ABC):
 
     def __init__(self, id: str) -> None:
         super().__init__()
-        self._check_allowed_models(id)
+        self._check_allowed_models(id, ALLOWED_BASE_MODELS)
         self.id = id
         self.source = None
 
@@ -50,16 +41,19 @@ class Model(ABC):
     @abstractmethod
     def query(
         self,
-        prompt: Prompt,
-        variable: Variable,
+        prompt: str,
+        variable: str,
         temp: float,
-        api_key: str | None
+        api_key: str | None,
     ) -> tuple[str, float]:
         pass
 
-    def build_messages(
-        self, prompt: Prompt, variable: Variable
-    ) -> list[dict[str, str]]:
-        # TODO
-        text = prompt.content.replace(prompt.slot, variable.content)
-        return [{"role": "user", "content": text}]
+    def build_messages(self, prompt: str) -> list[dict]:
+        messages = [{"role": "user", "content": prompt}]
+        return messages
+
+    def append_message(
+        self, messages: list[dict], role: str, message: str
+    ) -> list[dict]:
+        messages.append({"role": role, "content": message})
+        return messages
