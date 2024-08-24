@@ -1,11 +1,32 @@
+import os
 import time
+import sqlite3
+from pathlib import Path
 from typing import Generator
-from Prophet import (
-    Prophet,
-    ProphetRandom,
-    ProphetSemanticSearch,
-    ProphetSemanticWithRerank,
-)
+from collections import OrderedDict
+
+import pandas as pd
+import streamlit as st
+
+
+@st.cache_data
+def get_data(db: Path) -> pd.DataFrame:
+    # requires table to have same name as db file
+    table = os.path.basename(db).replace(".db", "")
+    return pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
+
+
+def concat_items(df: pd.DataFrame, item: pd.Series, iterations: int) -> str:
+    result = item["content"]
+
+    for i in range(iterations):
+        result += " "
+
+        mask = df["sentence"] == item["sentence"] + i
+        row = df.loc[mask].iloc[0]
+        result += row["content"]
+
+    return result
 
 
 def fake_stream(sentence: str) -> Generator[str, None, None]:
@@ -14,25 +35,44 @@ def fake_stream(sentence: str) -> Generator[str, None, None]:
         time.sleep(0.05)
 
 
-def find_prophet(strategy: str) -> Prophet:
-    match strategy:
-        case "Dancer":
-            return ProphetRandom()
-        case "Oracle":
-            return ProphetSemanticSearch()
-        case "Navigator":
-            return ProphetSemanticWithRerank()
-        case _:
-            raise ValueError(f"Invalid strategy: {strategy}")
+def get_base_model(model_id: str) -> str:
+    return model_id.split(":")[1]
 
 
-def get_next_by_index():
-    pass
+def update_tokens(n_tokens: int, where: str):
+    TOKEN_MULTIPLIER = 0.05
+
+    value = (st.session_state.tokens_used + n_tokens) * TOKEN_MULTIPLIER
+
+    print(f"Impatience rises: +{value:.0f}; source: {where}")
+
+    result = min(100, value)
+    st.session_state.tokens_used = int(result)
 
 
-def get_next_semantic():
-    pass
+def write_roman(num):
 
+    roman = OrderedDict()
+    roman[1000] = "M"
+    roman[900] = "CM"
+    roman[500] = "D"
+    roman[400] = "CD"
+    roman[100] = "C"
+    roman[90] = "XC"
+    roman[50] = "L"
+    roman[40] = "XL"
+    roman[10] = "X"
+    roman[9] = "IX"
+    roman[5] = "V"
+    roman[4] = "IV"
+    roman[1] = "I"
 
-def get_next_completion():
-    pass
+    def roman_num(num):
+        for r in roman.keys():
+            x, y = divmod(num, r)
+            yield roman[r] * x
+            num -= r * x
+            if num <= 0:
+                break
+
+    return "".join([a for a in roman_num(num)])
