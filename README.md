@@ -1,6 +1,8 @@
 # Prophetic Strategies
 
-Semantic search through Lacan's Seminar Book 5. Access [here](https://prophetic.streamlit.app/).
+Generate philosophical advice regarding certain topics.
+
+Semantic search and generation using finetuned models for certain books. Access [here](https://prophetic.streamlit.app/).
 
 ## Data model
 
