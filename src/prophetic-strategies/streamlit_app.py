@@ -10,7 +10,7 @@ DEBUG = True
 if "tokens_used" not in st.session_state:
     st.session_state.tokens_used = 0
 
-st.title("Prophetic Strategies")
+st.title("Phantom Strategies")
 st.write("")
 
 ### PARAMETERS ###

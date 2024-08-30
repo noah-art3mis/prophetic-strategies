@@ -22,3 +22,8 @@ Semantic search and generation using finetuned models for certain books.
 
 -   sentence-transformers interacts unfavourably with streamlit.
 -   Anecdotally, more examples make the model respond in more diverse ways.
+-   Mill's does not stck to the fnetuning. Mght volume of lack data. Try FT gpt-4o instead.
+
+## TODO
+
+-   spectral council
