@@ -1,8 +1,8 @@
-# Prophetic Strategies
+# Phantom Strategies
 
-Generate philosophical advice regarding certain topics.
+Generate philosophical advice regarding certain topics. Access [here](https://prophetic.streamlit.app/).
 
-Semantic search and generation using finetuned models for certain books. Access [here](https://prophetic.streamlit.app/).
+Semantic search and generation using finetuned models for certain books.
 
 ## Data model
 
