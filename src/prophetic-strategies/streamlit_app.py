@@ -7,8 +7,6 @@ from Prophet import Prophet
 
 DEBUG = True
 
-db = Path("db/prophetic.db")
-
 if "tokens_used" not in st.session_state:
     st.session_state.tokens_used = 0
 
@@ -70,7 +68,7 @@ else:
             strategies=[x["name"] for x in STRATEGIES],
         )
 
-        df = get_data(db, prophet.table)
+        df = get_data(prophet.table)
         search_result = prophet.search(question, df)
         stream = prophet.generate(search_result["content"], message_history=[])
 

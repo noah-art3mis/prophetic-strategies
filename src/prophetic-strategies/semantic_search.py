@@ -23,13 +23,5 @@ def _get_embedding(text: str) -> list[float]:
     return completion
 
 
-def _cosine_similarity(a, b: list):
-    a = _decode_binary_data(a)
+def _cosine_similarity(a: np.ndarray, b: list):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
-
-
-def _decode_binary_data(data):
-    # Convert binary data to a numpy array of floats
-    num_elements = len(data) // 8  # Each float64 is 8 bytes
-    decoded_array = np.frombuffer(data, dtype=np.float64, count=num_elements)
-    return decoded_array

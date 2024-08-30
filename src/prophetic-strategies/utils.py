@@ -10,11 +10,10 @@ import streamlit as st
 
 
 @st.cache_data
-def get_data(db: Path, table: str | None) -> pd.DataFrame:
+def get_data(table: str | None) -> pd.DataFrame:
     if table is None:
         raise ValueError("table cannot be None")
-    
-    return pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
+    return pd.read_feather(f"db/{table}.feather")
 
 
 def concat_items(df: pd.DataFrame, item: pd.Series, iterations: int) -> str:
