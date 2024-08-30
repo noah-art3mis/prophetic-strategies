@@ -4,15 +4,37 @@ STRATEGIES = [
         "description": "Semantic search (SS) using `text-embedding-3-small`",
     },
     {
-        "name": "Ficticious",
-        "description": "SS + `gpt4o-mini` finetuned with `3171` sentences",
+        "name": "Fallacious",
+        "description": "SS + `gpt-4o` finetuned on Lacan's _Seminar Book V_",
     },
     {
-        "name": "Fallacious",
-        "description": "SS + `gpt4o` finetuned with `3171` sentences",
+        "name": "Ficticious",
+        "description": "SS + `gpt-4o-mini` (FT) finetuned on Lacan's _Seminar Book V_",
     },
-    {"name": "Erratic", "description": "Mystery sampling"},
-    {"name": "Mercurial", "description": "Mystery strategy"},
+    {
+        "name": "Erratic",
+        "description": "Mystery sampling",
+    },
+    {
+        "name": "Mercurial",
+        "description": "Mystery strategy",
+    },
+    {
+        "name": "Chimerical",
+        "description": "SS + FT on Steiner's _An Outline of Occult Science_",
+    },
+    {
+        "name": "Spectral",
+        "description": "SS + FT on Hegel's _Philosophy of Mind_",
+    },
+    {
+        "name": "Quixotic",
+        "description": "SS + FT on Marcus Aurelius' _Meditations_",
+    },
+    {
+        "name": "Apocryphal",
+        "description": "SS + FT on Mill's _On Liberty_",
+    },
 ]
 
 

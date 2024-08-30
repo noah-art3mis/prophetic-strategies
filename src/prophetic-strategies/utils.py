@@ -10,9 +10,10 @@ import streamlit as st
 
 
 @st.cache_data
-def get_data(db: Path) -> pd.DataFrame:
-    # requires table to have same name as db file
-    table = os.path.basename(db).replace(".db", "")
+def get_data(db: Path, table: str | None) -> pd.DataFrame:
+    if table is None:
+        raise ValueError("table cannot be None")
+    
     return pd.read_sql(f"""SELECT * FROM {table}""", con=sqlite3.connect(db))
 
 

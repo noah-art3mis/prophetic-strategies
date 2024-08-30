@@ -7,7 +7,7 @@ from Prophet import Prophet
 
 DEBUG = True
 
-db = Path("db/book5.db")
+db = Path("db/prophetic.db")
 
 if "tokens_used" not in st.session_state:
     st.session_state.tokens_used = 0
@@ -70,7 +70,7 @@ else:
             strategies=[x["name"] for x in STRATEGIES],
         )
 
-        df = get_data(db)
+        df = get_data(db, prophet.table)
         search_result = prophet.search(question, df)
         stream = prophet.generate(search_result["content"], message_history=[])
 
@@ -83,7 +83,7 @@ else:
 
             st.write("")
 
-            reference_author = f"Lacan, the {prophet.name}"
+            reference_author = f"{prophet.author}, the {prophet.name}"
             st.caption(
                 f'<div style="text-align: right;">{reference_author}</div>',
                 unsafe_allow_html=True,

@@ -16,6 +16,8 @@ class Prophet:
         self.temp = temp
         self.source = "openai"
         self.model_id = None
+        self.table = None
+        self.author = None
 
     def search(self, question: str, df: pd.DataFrame) -> pd.Series:
         return semantic_search(question, df)
@@ -54,6 +56,14 @@ class Prophet:
                 return Fallacious(api_key, temp)
             case "Erratic":
                 return Erratic(api_key, temp)
+            case "Chimerical":
+                return Chimerical(api_key, temp)
+            case "Spectral":
+                return Spectral(api_key, temp)
+            case "Apocryphal":
+                return Apocryphal(api_key, temp)
+            case "Quixotic":
+                return Quixotic(api_key, temp)
             case "Mercurial":
                 return Prophet.get_prophet(
                     random.choice(strategies), api_key, temp, strategies
@@ -63,12 +73,15 @@ class Prophet:
 
 
 class Oracle(Prophet):
+    """Semantic search (SS) using `text-embedding-3-small`"""
+
     def __init__(self, api_key: str, temp: float):
         super().__init__(api_key, temp)
         self.name = "Oracle"
-        self.description = "Semantic search (SS) using `text-embedding-3-small`"
         self.model_id = "text-embedding-3-small"
         self.temp = None
+        self.table = "lacan_book5"
+        self.author = "Lacan"
 
     # override
     def generate(
@@ -85,33 +98,39 @@ class Oracle(Prophet):
         }
 
 
+class Fallacious(Prophet):
+    """SS + `gpt-4o` finetuned on Lacan's _Seminar Book V_"""
+
+    def __init__(self, api_key: str, temp: float):
+        super().__init__(api_key, temp)
+        self.name = "Fallacious"
+        self.model_id = "ft:gpt-4o-2024-08-06:personal:book5-prev-5000:9zPWBSz9"
+        self.base_model = get_base_model(self.model_id)
+        self.table = "lacan_book5"
+        self.author = "Lacan"
+
+
 class Ficticious(Prophet):
-    """SS + `gpt4o-mini` finetuned with `3171` sentences"""
+    """SS + `gpt-4o-mini` finetuned (FT) on Lacan's _Seminar Book V_"""
 
     def __init__(self, api_key: str, temp: float):
         super().__init__(api_key, temp)
         self.name = "Ficticious"
         self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:book5-prev-5000:9zOZlylK"
         self.base_model = get_base_model(self.model_id)
-
-
-class Fallacious(Prophet):
-    """SS + `gpt4o` finetuned with `3171` sentences"""
-
-    def __init__(self, api_key: str, temp: float):
-        super().__init__(api_key, temp)
-        self.name = "Fallacious"
-        self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:book5-prev-500:9zNj1EM1"
-        self.base_model = get_base_model(self.model_id)
+        self.table = "lacan_book5"
+        self.author = "Lacan"
 
 
 class Erratic(Prophet):
-    """Selects snippets randomly"""
+    """Selects snippets randomly from Lacan's _Seminar Book V_"""
 
     def __init__(self, api_key: str, temp: float):
         super().__init__(api_key, temp)
         self.name = "Erratic"
         self.model_id = None
+        self.table = "lacan_book5"
+        self.author = "Lacan"
 
     def search(self, question: str, df: pd.DataFrame) -> pd.Series:
         # results = df.sample(iterations)
@@ -136,3 +155,51 @@ class Erratic(Prophet):
             "sentence": search_result["sentence"],
             "content": content,
         }
+
+
+class Chimerical(Prophet):
+    """SS + FT on Steiner's _An Outline of Occult Science_"""
+
+    def __init__(self, api_key: str, temp: float):
+        super().__init__(api_key, temp)
+        self.name = "Chimerical"
+        self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:steiner:9zyuSD4q"
+        self.base_model = get_base_model(self.model_id)
+        self.table = "steiner_occult"
+        self.author = "Steiner"
+
+
+class Spectral(Prophet):
+    """SS + FT on Hegel's _Philosophy of Mind_"""
+
+    def __init__(self, api_key: str, temp: float):
+        super().__init__(api_key, temp)
+        self.name = "Spectral"
+        self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:hegel:A09OUjD3"
+        self.base_model = get_base_model(self.model_id)
+        self.table = "hegel_mind"
+        self.author = "Hegel"
+
+
+class Quixotic(Prophet):
+    """SS + FT on Marcus Aurelius' _Meditations_"""
+
+    def __init__(self, api_key: str, temp: float):
+        super().__init__(api_key, temp)
+        self.name = "Quixotic"
+        self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:marcus:A09OPfR7"
+        self.base_model = get_base_model(self.model_id)
+        self.table = "marcus_meditations"
+        self.author = "Marcus Aurelius"
+
+
+class Apocryphal(Prophet):
+    """SS + FT on Mill's _On Liberty_"""
+
+    def __init__(self, api_key: str, temp: float):
+        super().__init__(api_key, temp)
+        self.name = "Apocryphal"
+        self.model_id = "ft:gpt-4o-mini-2024-07-18:personal:mill:A09IWIRD"
+        self.base_model = get_base_model(self.model_id)
+        self.table = "mill_liberty"
+        self.author = "Mill"
