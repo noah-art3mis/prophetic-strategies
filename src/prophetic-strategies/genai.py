@@ -18,6 +18,7 @@ def completion_stream(
         temperature=temp,
         stream=True,
         # stream_options={"include_usage": True},
+        max_tokens=256,
     )
 
     # TODO add token tracking
