@@ -27,3 +27,4 @@ Semantic search and generation using finetuned models for certain books.
 ## TODO
 
 -   spectral council
+-   adslkjasd
