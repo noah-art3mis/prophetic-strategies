@@ -1,7 +1,4 @@
-import os
 import time
-import sqlite3
-from pathlib import Path
 from typing import Generator
 from collections import OrderedDict
 
@@ -9,7 +6,6 @@ import pandas as pd
 import streamlit as st
 
 
-@st.cache_data
 def get_data(table: str | None) -> pd.DataFrame:
     if table is None:
         raise ValueError("table cannot be None")
