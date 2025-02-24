@@ -1,6 +1,6 @@
 # Prophetic Strategies
 
-Semantic search through Lacan's Seminar Book 5. Access [here](https://prophetic.streamlit.app/).
+AI models finetuned on Lacan's Seminar Book 5. Access [here](https://prophetic.streamlit.app/).
 
 ## Data model
 
@@ -15,8 +15,3 @@ Semantic search through Lacan's Seminar Book 5. Access [here](https://prophetic.
       - content: "We have expressed this by placing a rough breathing in parenthesis in α' φ', namely that the Other homologates it as such, homologates it as message, authenticates it as a joke."
       - embedding: { ... }
 ```
-
-## Findings
-
--   sentence-transformers interacts unfavourably with streamlit.
--   Anecdotally, more examples make the model respond in more diverse ways.
