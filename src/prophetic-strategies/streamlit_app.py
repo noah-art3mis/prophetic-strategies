@@ -24,6 +24,7 @@ with st.sidebar:
         label="Strategy",
         options=[x["name"] for x in STRATEGIES],
         captions=[x["description"] for x in STRATEGIES],
+        index=1 # starts with second option selected
     )
 
     iterations = st.slider("Iterations", 0, 5, 2)

@@ -11,7 +11,7 @@ STRATEGIES = [
         "name": "Fallacious",
         "description": "SS + `gpt4o` finetuned with `3171` sentences",
     },
-    {"name": "Erratic", "description": "Mystery sampling"},
+    # {"name": "Erratic", "description": "Mystery sampling"},
     {"name": "Mercurial", "description": "Mystery strategy"},
 ]
 
@@ -39,7 +39,17 @@ ALLOWED_BASE_MODELS = [
     # cae reranker
 ]
 
-REFERENCE_PROMPT = """Come up with an interesting title for a book or article this text might belong to. The title should have a similar style to these examples: 
+REFERENCE_PROMPT = """Come up with a title for a book or article this text might belong to. Don't be too obvious; use a mysterious name like those below. The title should have a similar style to the examples. 
+
+###
+
+Text:
+
+{{SNIPPET}}
+
+###
+
+Examples:
 
 - On My Antecedents
 - Beyond the _Reality Principle_
@@ -72,73 +82,34 @@ REFERENCE_PROMPT = """Come up with an interesting title for a book or article th
 - Position of the Unconscious
 - On Freud's _Trieb_ and the Psychoanalyst's Desire
 - Science and Truth
-
-This is the text in question:
-
-###
-
-{{SNIPPET}}
+- Freud's Papers on Technique
+- The Ego in Freud's Theory and in the Technique of Psychoanalysis
+- The Psychoses
+- The Object Relation
+- The Formations of the Unconscious 
+- Desire and Its Interpretation
+- The Ethics of Psychoanalysis
+- Transference
+- Identification
+- Anxiety 
+- The Names of the Father
+- The Four Fundamental Concepts of Psychoanalysis
+- Problèmes cruciaux pour la psychanalyse
+- L'objet de la psychanalyse
+- La logique du fantasme
+- L'acte psychanalytique
+- From an Other to the other
+- The Other Side of Psychoanalysis 
+- On a Discourse that Might Not be a Semblance
+- ...or Worse
+- Encore, On Feminine Sexuality: The Limits of Love and Knowledge
+- Les non-dupes errent
+- The Sinthome
+- L'insu que sait de l'une-bévue s'aile à mourre
+- Le moment de conclure
+- La topologie et le temps
+- Dissolution
 
 ###
 
 Respond exclusively with the title and nothing else."""
-
-# ref_claude = """You are tasked with creating an interesting and thought-provoking title for a book or article based on a given text snippet. The title should be in a similar style to the examples provided in the task description.
-
-# Here is the text snippet you will be working with:
-
-# <snippet>
-# {{SNIPPET}}
-# </snippet>
-
-# Guidelines for creating the title:
-# 1. Analyze the main themes, concepts, or ideas present in the text snippet.
-# 2. Consider using abstract or philosophical language that captures the essence of the text.
-# 3. You may use underscores to emphasize certain words or phrases, as seen in some of the example titles.
-# 4. The title can be a phrase, a question, or a statement.
-# 5. Aim for a title that is intriguing and provocative, encouraging readers to explore the content further.
-# 6. Feel free to use metaphors, allusions, or wordplay if appropriate.
-
-# The title should have a similar style to these examples:
-
-# <title_examples>
-# - On My Antecedents
-# - Beyond the _Reality Principle_
-# - The Mirror Stage as Formative of the _I_ Function as Revealed in Psychoanalytic Experience
-# - Aggressiveness in Psychoanalysis
-# - A Theoretical Introduction to the Functions of Psychoanalysis in Criminology
-# - Presentation on Psychical Causality
-# - Logical Time and the Assertion of Anticipated Certainty
-# - Presentation on Transference
-# - On the Subject Who Is Finally in Question
-# - The Function and Field of Speech and Language in Psychoanalysis
-# - Variations on the Standard Treatment
-# - On a Purpose
-# - Introduction to Jean Hyppolite's Commentary on Freud's _Verneinung_
-# - Response to Jean Hyppolite's Commentary on Freud's _Verneinung_
-# - The Freudian Thing, or the Meaning of the Return to Freud in Psychoanalysis
-# - Psychoanalysis and Its Teaching
-# - The Situation of Psychoanalysis and the Training of Psychoanalysts in 1956
-# - The Instance of the Letter in the Unconscious, or Reason Since Freud
-# - On a Question Prior to Any Possible Treatment of Psychosis
-# - The Direction of the Treatment and the Principles of Its Power
-# - Remarks on Daniel Lagache's Presentation: _Psychoanalysis and Personality_
-# - The Signification of the Phallus
-# - In Memory of Ernest Jones: On His Theory of Symbolism
-# - On an Ex Post Facto Syllabary
-# - Guiding Remarks for a Convention on Female Sexuality
-# - The Youth of Gide, or the Letter and Desire
-# - Kant with Sade
-# - The Subversion of the Subject and the Dialectic of Desire in the Freudian Unconscious
-# - Position of the Unconscious
-# - On Freud's _Trieb_ and the Psychoanalyst's Desire
-# - Science and Truth
-# </title_examples>
-
-# Once you have formulated a suitable title, provide your response in the following format:
-
-# <title>
-# Your created title goes here
-# </title>
-
-# Ensure that you only include the title within the tags, with no additional explanation or commentary."""

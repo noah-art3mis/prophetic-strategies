@@ -54,10 +54,10 @@ class Prophet:
                 return Fallacious(api_key, temp)
             case "Erratic":
                 return Erratic(api_key, temp)
-            case "Mercurial":
-                return Prophet.get_prophet(
-                    random.choice(strategies), api_key, temp, strategies
-                )
+            # case "Mercurial":
+            #     return Prophet.get_prophet(
+            #         random.choice(strategies), api_key, temp, strategies
+            #     )
             case _:
                 raise ValueError(f"Model {strategy} not found.")
 
