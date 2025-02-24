@@ -36,7 +36,7 @@ with st.sidebar:
     st.divider()
     st.write("Made by Gustavo Costa")
     st.write(
-        "[Source code](https://github.com/noah-art3mis/prophetic-strategies) / [Blog](https://gustavocosta.psc.br/) / [Instagram](https://www.instagram.com/simulacro.psi/) / [Twitter](https://x.com/simulacrum_ai) / [LinkedIn](https://www.linkedin.com/in/gustavoarcos/)"
+        "[GitHub](https://github.com/noah-art3mis/prophetic-strategies) / [LinkedIn](https://www.linkedin.com/in/gustavoarcos/) / [Blog](https://simulacro.co.uk/) / [Instagram](https://www.instagram.com/simulacro.psi/)"
     )
     st.write("")
     st.write("")
