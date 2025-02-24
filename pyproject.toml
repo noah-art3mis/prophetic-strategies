@@ -1,9 +1,11 @@
 [tool.poetry]
+package-mode = false
 name = "prophetic-strategies"
 version = "0.1.0"
 description = ""
 authors = ["Gustavo Araujo Costa <gustavo@arcos.org.br>"]
 readme = "README.md"
+
 
 [tool.poetry.dependencies]
 python = "^3.10"
